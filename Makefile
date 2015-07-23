@@ -21,7 +21,9 @@ LDLIBS = -lbluetooth
 
 CFLAGS=
 
-all : brcm_patchram_plus brcm_patchram_plus_new brcm_patchram_plus_h5 brcm_patchram_plus_usb
+all : brcm_patchram_plus brcm_patchram_plus_new brcm_bt_reset brcm_patchram_plus_h5 brcm_patchram_plus_usb
+
+brcm_bt_reset : brcm_bt_reset.o
 
 brcm_patchram_plus_h5 : brcm_patchram_plus_h5.o
 
