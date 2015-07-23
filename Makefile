@@ -15,17 +15,11 @@
 #*  limitations under the License.
 #*
 #******************************************************************************
-INSTALL_PATH?=/bin/
 
 LDLIBS = -lbluetooth
 # CFLAGS=-g
 
 CFLAGS=
-
-install : all
-	install -c -m 644 brcm_patchram_plus $(INSTALL_PATH) 
-	install -c -m 644 brcm_patchram_plus_h5 $(INSTALL_PATH) 
-	install -c -m 644 brcm_patchram_plus_usb $(INSTALL_PATH) 
 
 all : brcm_patchram_plus brcm_patchram_plus_h5 brcm_patchram_plus_usb
 
