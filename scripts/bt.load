@@ -9,7 +9,7 @@ BT_MAC_ADDR=00:53:4A:53:02:02
 #	The new approach is to run brcm_bt_reset first.
 
 EXTRA=
-RESET_SCRIPT=
+RESET_SCRIPT=/bin/bt.init
 PATCH_SCRIPT=
 
 #	Uncomment the line below to select the old way to reset the
@@ -34,9 +34,7 @@ BT_TTY=/dev/ttymxc1
 
 #	If new approach, we run the "reset" program here.
 
-if [ "$PATCH_SCRIPT" = "" ] ; then
-  brcm_bt_reset ${BT_TTY} ${RESET_SCRIPT}
-fi
+brcm_bt_reset ${BT_TTY} ${RESET_SCRIPT}
 
 #	Now we run the download program with a time limit of 10 seconds.
 
