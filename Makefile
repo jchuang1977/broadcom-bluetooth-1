@@ -27,6 +27,7 @@ brcm_bt_reset : brcm_bt_reset.o
 
 brcm_patchram_plus_h5 : brcm_patchram_plus_h5.o
 
+# Tak naprawdę potrzebujemy tylko tego pliku.
 brcm_patchram_plus_new : brcm_patchram_plus_new.o
 
 brcm_patchram_plus : brcm_patchram_plus.o
