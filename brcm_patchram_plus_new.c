@@ -20,7 +20,7 @@
  ******************************************************************************/
 
 /*****************************************************************************
-**                                                                           
+**
 **  Name:          brcm_patchram_plus.c
 **
 **  Description:   This program downloads a patchram files in the HCD format
@@ -94,15 +94,15 @@
 **                 It will return 0 for success and a number greater than 0
 **                 for any errors.
 **
-**                 For Android, this program invoked using a 
+**                 For Android, this program invoked using a
 **                 "system(2)" call from the beginning of the bt_enable
-**                 function inside the file 
+**                 function inside the file
 **                 system/bluetooth/bluedroid/bluetooth.c.
 **
 **                 If the Android system property "ro.bt.bcm_bdaddr_path" is
 **                 set, then the bd_addr will be read from this path.
 **                 This is overridden by --bd_addr on the command line.
-**  
+**
 ******************************************************************************/
 
 #include <stdio.h>
@@ -564,7 +564,7 @@ init_uart()
 	tcsetattr(uart_fd, TCSANOW, &termios);
 
 	usleep (10000);
-} 
+}
 
 void
 dump(uchar *out, int len)
@@ -654,6 +654,21 @@ void read_waitfor7 (int fd)
 }
 
 void
+ap6210_gpio_reset() {
+    int gpio_reset_n, gpio_en;
+
+    gpio_reset_n = open("/sys/class/gpio/gpio109/value", O_RDWR);
+    gpio_en      = open("/sys/class/gpio/gpio147/value", O_RDWR);
+
+    write(gpio_reset_n, "0", 1);
+    write(gpio_en, "0", 1);
+    usleep(10);
+    write(gpio_reset_n, "1", 1);
+    close(gpio_reset_n);
+    close(gpio_en);
+}
+
+void
 read_event (int fd, uchar *buffer)
 {
 	int i = 0;
@@ -682,7 +697,7 @@ read_event (int fd, uchar *buffer)
 		fprintf(stderr, "received %d\n", count);
 		dump(buffer, count);
 	}
-    
+
     if (memcmp (buffer, reqd7, 7)) {
         fprintf (stderr, "Expected %02x%02x%02x%02x%02x%02x%02x\n",
             reqd7 [0], reqd7 [1], reqd7 [2], reqd7 [3], reqd7 [4], reqd7 [5], reqd7 [6]);
@@ -727,6 +742,8 @@ proc_reset()
 {
 	signal(SIGALRM, expired);
 
+    fprintf(stderr,"GPIO RESET.\n");
+    ap6210_gpio_reset();
 
 	hci_send_cmd(hci_reset, sizeof(hci_reset));
 
