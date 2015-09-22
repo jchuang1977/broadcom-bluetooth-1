@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Adres MAC oraz port szeregowy do którego jest podpięty bluetooth.
+BT_MAC_ADDR=00:53:4A:53:02:02
+BT_TTY=/dev/ttymxc1
+
+# Definicje pinów.
+BT_WAKE_EN_num=147
+BT_RST_N_num=109
+BT_WAKE_EN=gpio${BT_WAKE_EN_num}
+BT_RST_N=gpio${BT_RST_N_num}
+
+# --------------------------------------------------
+# Inicjalizacja i reset modułu bluetooth.
+#
+# Domyślnie założono, że  AP6210 jest zasilany.
+# --------------------------------------------------
+if [ ! -x /sys/class/gpio/${BT_WAKE_EN} ] ; then
+  echo -n ${BT_WAKE_EN_num} > /sys/class/gpio/export
+  echo -n out > /sys/class/gpio/${BT_WAKE_EN}/direction
+fi
+
+if [ ! -x /sys/class/gpio/${BT_RST_N} ] ; then
+  echo -n ${BT_RST_N_num}  > /sys/class/gpio/export
+  echo -n out > /sys/class/gpio/${BT_RST_N}/direction
+fi
+
+# 0 na BT_RST_N resetuje urządzenie
+echo -n 0   > /sys/class/gpio/${BT_WAKE_EN}/value
+echo -n 0   > /sys/class/gpio/${BT_RST_N}/value
+
+echo -n 0   > /sys/class/gpio/${BT_RST_N}/value
+echo -n 1   > /sys/class/gpio/${BT_RST_N}/value
+
+# --------------------------------------------------
+
+
+# --------------------------------------------------
+# Wgrywanie firmware do urządzenia.
+brcm_patchram_plus_new	--patchram /lib/firmware/ap6210/bcm20710a1.hcd \
+					--bd_addr ${BT_MAC_ADDR} \
+					--no2bytes \
+					--tosleep 2500 \
+					-d \
+					${BT_TTY} 
