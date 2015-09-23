@@ -662,18 +662,11 @@ ap6210_gpio_reset() {
 
     write(gpio_reset_n, "0", 1);
     write(gpio_en, "0", 1);
-<<<<<<< HEAD
     usleep(2000); // 2ms
     write(gpio_reset_n, "1", 1);
     close(gpio_reset_n);
     close(gpio_en);
     usleep(20000); //20 ms
-=======
-    usleep(10);
-    write(gpio_reset_n, "1", 1);
-    close(gpio_reset_n);
-    close(gpio_en);
->>>>>>> dd4c3533845270efb6e66f75e908b2877d3cf316
 }
 
 void
@@ -757,12 +750,6 @@ proc_reset()
 {
 	signal(SIGALRM, expired);
 
-<<<<<<< HEAD
-=======
-    fprintf(stderr,"GPIO RESET.\n");
-    ap6210_gpio_reset();
-
->>>>>>> dd4c3533845270efb6e66f75e908b2877d3cf316
 	hci_send_cmd(hci_reset, sizeof(hci_reset));
 
 	alarm(4);
@@ -979,9 +966,9 @@ main (int argc, char **argv)
 #ifdef ANDROID
 	read_default_bdaddr();
 #endif
-    // 1. First initialization of UART PORT
+    // 1. First initialization
     //
-    fprintf(stderr, "First init.\n");
+    fprintf(stderr, "First init.");
     ap6210_gpio_reset();
 	if (parse_cmd_line(argc, argv)) {
 		exit(1);
@@ -992,12 +979,14 @@ main (int argc, char **argv)
 	}
 
 	init_uart ();
+
 	proc_enable_tty ();		// SJS
 	read_prep (uart_fd);
+	//proc_reset_first();
     close(uart_fd);
 
-    // 2. Second initialization and firmware update
-    fprintf(stderr, "Second init.\n");
+    // 2. Second initialization
+    fprintf(stderr, "Second init.");
     ap6210_gpio_reset();
 	if (parse_cmd_line(argc, argv)) {
 		exit(1);
@@ -1008,6 +997,7 @@ main (int argc, char **argv)
 	}
 
 	init_uart ();
+
 	proc_enable_tty ();		// SJS
 	read_prep (uart_fd);
 	proc_reset();
