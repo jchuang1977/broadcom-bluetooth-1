@@ -739,13 +739,6 @@ expired(int sig)
 }
 
 void
-proc_reset_first()
-{
-	hci_send_cmd(hci_reset, sizeof(hci_reset));
-
-}
-
-void
 proc_reset()
 {
 	signal(SIGALRM, expired);
@@ -982,7 +975,6 @@ main (int argc, char **argv)
 
 	proc_enable_tty ();		// SJS
 	read_prep (uart_fd);
-	//proc_reset_first();
     close(uart_fd);
 
     // 2. Second initialization
