@@ -4,9 +4,9 @@
 #
 # Domyślnie założono, że  AP6210 jest zasilany.
 # --------------------------------------------------
+source /uboot-env.txt
 
 # Adres MAC oraz port szeregowy do którego jest podpięty bluetooth.
-BT_MAC_ADDR=00:53:4A:53:02:02
 BT_TTY=/dev/ttymxc1
 
 # Definicje pinów.
@@ -37,7 +37,7 @@ echo -n 1   > /sys/class/gpio/${BT_RST_N}/value
 # --------------------------------------------------
 # Wgrywanie firmware do urządzenia.
 brcm_patchram_plus_new	--patchram /lib/firmware/ap6210/bcm20710a1.hcd \
-					--bd_addr ${BT_MAC_ADDR} \
+					--bd_addr ${mac} \
 					--no2bytes \
 					--tosleep 2500 \
 					-d \
