@@ -46,5 +46,5 @@ brcm_patchram_plus_new	--patchram /lib/firmware/ap6210/bcm20710a1.hcd \
 
 # --------------------------------------------------
 # Tworzenie nowego urządzenia w systemie.
-echo "HciAttach..."
-hciattach /dev/ttymxc1 any
+#echo "HciAttach..."
+#hciattach /dev/ttymxc1 any
