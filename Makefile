@@ -16,21 +16,32 @@
 #*
 #******************************************************************************
 
-LDLIBS = -lbluetooth
+CROSS_COMPILE:=/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/bin/arm-fsl-linux-gnueabi-
+
+LIBS = -L/home/ubuntu/CWM07/ltib/rootfs/usr/lib -lbluetooth
 # CFLAGS=-g
 
-CFLAGS=
+CFLAGS= -I/home/ubuntu/CWM07/ltib/rpm/BUILD/bluez-libs-2.25/include
 
-all : brcm_patchram_plus brcm_patchram_plus_new brcm_bt_reset brcm_patchram_plus_h5 brcm_patchram_plus_usb
+CC := $(CROSS_COMPILE)gcc
+LD := $(CROSS_COMPILE)ld
+NM := $(CROSS_COMPILE)nm
+OBJCOPY := $(CROSS_COMPILE)objcopy
+STRIP := $(CROSS_COMPILE)strip
 
-brcm_bt_reset : brcm_bt_reset.o
+all : brcm_patchram_plus brcm_patchram_plus_h5 brcm_patchram_plus_usb brcm_patchram_plus_new
+
+brcm_patchram_plus_new : brcm_patchram_plus_new.o
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 brcm_patchram_plus_h5 : brcm_patchram_plus_h5.o
-
-# Tak naprawdę potrzebujemy tylko tego pliku.
-brcm_patchram_plus_new : brcm_patchram_plus_new.o
-
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	
 brcm_patchram_plus : brcm_patchram_plus.o
-
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	
 brcm_patchram_plus_usb : brcm_patchram_plus_usb.o
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
 
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $^

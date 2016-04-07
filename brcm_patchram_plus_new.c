@@ -962,7 +962,7 @@ main (int argc, char **argv)
     // 1. First initialization
     //
     fprintf(stderr, "First init.");
-    ap6210_gpio_reset();
+    //ap6210_gpio_reset();
 	if (parse_cmd_line(argc, argv)) {
 		exit(1);
 	}
@@ -979,7 +979,7 @@ main (int argc, char **argv)
 
     // 2. Second initialization
     fprintf(stderr, "Second init.");
-    ap6210_gpio_reset();
+    //ap6210_gpio_reset();
 	if (parse_cmd_line(argc, argv)) {
 		exit(1);
 	}
